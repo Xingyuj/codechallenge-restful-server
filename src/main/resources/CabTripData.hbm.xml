@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 15/05/2018 2:50:32 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.datarepublic.simplecab.CabTripData" table="cab_trip_data" catalog="datarepublic" optimistic-lock="version">
+        <composite-id name="id" class="com.datarepublic.simplecab.CabTripDataId">
+            <key-property name="medallion" type="string">
+                <column name="medallion" length="65535" />
+            </key-property>
+            <key-property name="hackLicense" type="string">
+                <column name="hack_license" length="65535" />
+            </key-property>
+            <key-property name="vendorId" type="string">
+                <column name="vendor_id" length="65535" />
+            </key-property>
+            <key-property name="rateCode" type="java.lang.Integer">
+                <column name="rate_code" />
+            </key-property>
+            <key-property name="storeAndFwdFlag" type="string">
+                <column name="store_and_fwd_flag" length="65535" />
+            </key-property>
+            <key-property name="pickupDatetime" type="timestamp">
+                <column name="pickup_datetime" length="19" />
+            </key-property>
+            <key-property name="dropoffDatetime" type="timestamp">
+                <column name="dropoff_datetime" length="19" />
+            </key-property>
+            <key-property name="passengerCount" type="java.lang.Integer">
+                <column name="passenger_count" />
+            </key-property>
+            <key-property name="tripTimeInSecs" type="java.lang.Integer">
+                <column name="trip_time_in_secs" />
+            </key-property>
+            <key-property name="tripDistance" type="java.lang.Double">
+                <column name="trip_distance" precision="22" scale="0" />
+            </key-property>
+            <key-property name="pickupLongitude" type="java.lang.Double">
+                <column name="pickup_longitude" precision="22" scale="0" />
+            </key-property>
+            <key-property name="pickupLatitude" type="java.lang.Double">
+                <column name="pickup_latitude" precision="22" scale="0" />
+            </key-property>
+            <key-property name="dropoffLongitude" type="java.lang.Double">
+                <column name="dropoff_longitude" precision="22" scale="0" />
+            </key-property>
+            <key-property name="dropoffLatitude" type="java.lang.Double">
+                <column name="dropoff_latitude" precision="22" scale="0" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>
