@@ -10,7 +10,7 @@ public interface SimpleCabRepository {
 	Integer getCountByMedallionAndPickupDatetime(String medallionId,
 			Date pickupDate);
 
-	HashMap<String, HashMap<Date, Integer>> getCountsByMultipleMedallionsAndPickupDatetime(
+	HashMap<String, Integer> getCountsByMultipleMedallionsAndPickupDatetime(
 			ArrayList<String> medallionIds, Date pickupDate, boolean cached);
 	
 	void clearCache();

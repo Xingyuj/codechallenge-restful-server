@@ -30,7 +30,7 @@ public class SimpleCabRepositoryDao implements SimpleCabRepository {
 		ids.add("08099C118772D01BBA1C3F486BD8AF1E");
 		ids.add("B4C414BA3488EBECF8A633B313A41B00");
 		ids.add("01F753DA1D273F049CE7D2E16587C380");
-		HashMap<String, HashMap<Date, Integer>> maps = ss.getCountsByMultipleMedallionsAndPickupDatetime(ids, formatter.parse(dateInString), true);
+		HashMap<String, Integer> maps = ss.getCountsByMultipleMedallionsAndPickupDatetime(ids, formatter.parse(dateInString), true);
 		System.out.println(maps);
 	}
 
@@ -56,29 +56,23 @@ public class SimpleCabRepositoryDao implements SimpleCabRepository {
 	}
 
 	@Override
-	public HashMap<String, HashMap<Date, Integer>> getCountsByMultipleMedallionsAndPickupDatetime(
+	public HashMap<String, Integer> getCountsByMultipleMedallionsAndPickupDatetime(
 			ArrayList<String> medallionIds, Date pickupDate, boolean cached) {
-		HashMap<String, HashMap<Date, Integer>> result = new HashMap<String, HashMap<Date, Integer>>();
+		HashMap<String, Integer> result = new HashMap<String, Integer>();
 		for (String medallionId : medallionIds) {
 			getCountByMedallionAndPickupDatetime(medallionId, pickupDate);
 			if (cached && cache.containsKey(medallionId)
 					&& cache.get(medallionId).containsKey(pickupDate)) {
-				HashMap<Date, Integer> subResult = new HashMap<Date, Integer>();
-				subResult.put(pickupDate, cache.get(medallionId)
-						.get(pickupDate));
-				result.put(medallionId, subResult);
+				result.put(medallionId, cache.get(medallionId).get(pickupDate));
 			} else {
-
 				int count = getCountByMedallionAndPickupDatetime(medallionId,
 						pickupDate);
-
-				HashMap<Date, Integer> subResult = new HashMap<Date, Integer>();
-				subResult.put(pickupDate, count);
-				result.put(medallionId, subResult);
-
+				result.put(medallionId, count);
 				if (!cache.containsKey(medallionId)
 						|| !cache.get(medallionId).containsKey(pickupDate)) {
-					cache.putAll(result);
+					HashMap<Date, Integer> subResult = new HashMap<Date, Integer>();
+					subResult.put(pickupDate, count);
+					cache.put(medallionId, subResult);
 				}
 			}
 		}
