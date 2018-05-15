@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,20 +31,27 @@ public class CabsController {
 	public String getBarBySimplePathWithRequestParam(
 			@RequestParam(value = "medallions", required = true) String[] medallions,
 			@RequestParam(value = "pickup_date", required = true) String pickupDate,
-			@RequestParam(value = "cached", required = false, defaultValue = "false") boolean ignoreCache) {
+			@RequestParam(value = "cached", required = false, defaultValue = "false") boolean ignoreCache,
+			HttpServletResponse httpResponse) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
 		SimpleCabRepositoryDao capRepo = new SimpleCabRepositoryDao();
 		HashMap<String, Integer> result = new HashMap<String, Integer>();
 		Gson gson = new Gson();
 		String response = gson.toJson(result);
 		try {
-			result = capRepo.getCountsByMultipleMedallionsAndPickupDatetime(new ArrayList<String>(Arrays.asList(medallions)), formatter.parse(pickupDate), !ignoreCache);
+			result = capRepo.getCountsByMultipleMedallionsAndPickupDatetime(
+					new ArrayList<String>(Arrays.asList(medallions)),
+					formatter.parse(pickupDate), !ignoreCache);
 			response = gson.toJson(result);
 		} catch (ParseException e) {
 			JsonObject exceptionMsg = new JsonObject();
 			exceptionMsg.addProperty("Error Code", "400");
-			exceptionMsg.addProperty("Error Message", "Bad Request, Parse parameter error, please check date format");
+			exceptionMsg
+					.addProperty("Error Message",
+							"Bad Request, Parse parameter error, please check date format");
 			response = gson.toJson(exceptionMsg);
+			httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			e.printStackTrace();
 		}
 		return response;
