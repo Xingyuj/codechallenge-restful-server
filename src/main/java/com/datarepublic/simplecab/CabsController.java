@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +25,29 @@ public class CabsController {
 		return "Welcome to cab data researcher";
 	}
 
+	@RequestMapping(value = "/clearcache", method = RequestMethod.GET)
+	@ResponseBody
+	public String clearCache(HttpServletResponse httpResponse) {
+		SimpleCabRepositoryDao capRepo = new SimpleCabRepositoryDao();
+		Gson gson = new Gson();
+		String response = "";
+		try {
+			capRepo.clearCache();
+			JsonObject msg = new JsonObject();
+			msg.addProperty("Code", "200");
+			msg.addProperty("Msg", "Clear Cache Done");
+			response = gson.toJson(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+			JsonObject exceptionMsg = new JsonObject();
+			exceptionMsg.addProperty("Error Code", "500");
+			exceptionMsg.addProperty("Error Message", "SC_INTERNAL_SERVER_ERROR, Cache Clear Fail");
+			httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response = gson.toJson(exceptionMsg);
+		}
+		return response;
+	}
+
 	@RequestMapping(value = "/cabs", method = RequestMethod.GET)
 	@ResponseBody
 	public String getBarBySimplePathWithRequestParam(
@@ -34,7 +56,7 @@ public class CabsController {
 			@RequestParam(value = "cached", required = false, defaultValue = "false") boolean ignoreCache,
 			HttpServletResponse httpResponse) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		SimpleCabRepositoryDao capRepo = new SimpleCabRepositoryDao();
 		HashMap<String, Integer> result = new HashMap<String, Integer>();
 		Gson gson = new Gson();
