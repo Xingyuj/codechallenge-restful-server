@@ -20,6 +20,8 @@ import com.google.gson.JsonObject;
 
 @RestController
 public class CabsController {
+	private SimpleCabRepositoryDao capRepo = SimpleCabRepositoryDao.getSharedInstance();
+
 	@RequestMapping("/")
 	public String index() {
 		return "Welcome to cab data researcher";
@@ -28,7 +30,6 @@ public class CabsController {
 	@RequestMapping(value = "/clearcache", method = RequestMethod.GET)
 	@ResponseBody
 	public String clearCache(HttpServletResponse httpResponse) {
-		SimpleCabRepositoryDao capRepo = new SimpleCabRepositoryDao();
 		Gson gson = new Gson();
 		String response = "";
 		try {
@@ -56,8 +57,6 @@ public class CabsController {
 			@RequestParam(value = "cached", required = false, defaultValue = "true") boolean cached,
 			HttpServletResponse httpResponse) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-		SimpleCabRepositoryDao capRepo = SimpleCabRepositoryDao.getSharedInstance();
 		HashMap<String, Integer> result = new HashMap<String, Integer>();
 		Gson gson = new Gson();
 		String response = gson.toJson(result);
