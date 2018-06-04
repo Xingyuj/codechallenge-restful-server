@@ -1,4 +1,4 @@
-package com.datarepublic.simplecab;
+package com.ethanji.simplecab;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

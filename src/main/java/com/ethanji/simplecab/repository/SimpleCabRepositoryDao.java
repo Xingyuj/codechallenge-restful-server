@@ -1,21 +1,34 @@
-package com.datarepublic.simplecab.repository;
+package com.ethanji.simplecab.repository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 public class SimpleCabRepositoryDao implements SimpleCabRepository {
 	private Session session;
-	private HashMap<String, HashMap<Date, Integer>> cache;
+	private static ConcurrentHashMap<String, HashMap<Date, Integer>> cache; //use a thread safe map as cache
+	private static SimpleCabRepositoryDao sharedInstance; //singleton instance
+		
+	public static SimpleCabRepositoryDao getSharedInstance(){
+		if(sharedInstance == null){
+	        synchronized (SimpleCabRepositoryDao.class) {
+	            if(sharedInstance == null){
+	            	sharedInstance = new SimpleCabRepositoryDao();
+	            }
+	        }
+	    }
+	    return sharedInstance;
+	}
 
 	public SimpleCabRepositoryDao() {
 		this.setSession(HibernateUtils.getSession());
-		this.cache = new HashMap<String, HashMap<Date, Integer>>();
+		SimpleCabRepositoryDao.cache = new ConcurrentHashMap<String, HashMap<Date, Integer>>();
 	}
 
 	public static void main(String[] args) throws ParseException {
@@ -68,8 +81,9 @@ public class SimpleCabRepositoryDao implements SimpleCabRepository {
 				int count = getCountByMedallionAndPickupDatetime(medallionId,
 						pickupDate);
 				result.put(medallionId, count);
-				if (!cache.containsKey(medallionId)
-						|| !cache.get(medallionId).containsKey(pickupDate)) {
+				//only when count not equal 0, put in cache. Otherwise, malicious action may using random medallionId to flush cache.
+				if (count!=0 && (!cache.containsKey(medallionId)
+						|| !cache.get(medallionId).containsKey(pickupDate))) {
 					HashMap<Date, Integer> subResult = new HashMap<Date, Integer>();
 					subResult.put(pickupDate, count);
 					cache.put(medallionId, subResult);

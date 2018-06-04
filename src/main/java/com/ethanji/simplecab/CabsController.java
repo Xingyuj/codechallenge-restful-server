@@ -1,4 +1,4 @@
-package com.datarepublic.simplecab;
+package com.ethanji.simplecab;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.datarepublic.simplecab.repository.SimpleCabRepositoryDao;
+import com.ethanji.simplecab.repository.SimpleCabRepositoryDao;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -53,18 +53,18 @@ public class CabsController {
 	public String getBarBySimplePathWithRequestParam(
 			@RequestParam(value = "medallions", required = true) String[] medallions,
 			@RequestParam(value = "pickup_date", required = true) String pickupDate,
-			@RequestParam(value = "cached", required = false, defaultValue = "false") boolean ignoreCache,
+			@RequestParam(value = "cached", required = false, defaultValue = "true") boolean cached,
 			HttpServletResponse httpResponse) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-		SimpleCabRepositoryDao capRepo = new SimpleCabRepositoryDao();
+		SimpleCabRepositoryDao capRepo = SimpleCabRepositoryDao.getSharedInstance();
 		HashMap<String, Integer> result = new HashMap<String, Integer>();
 		Gson gson = new Gson();
 		String response = gson.toJson(result);
 		try {
 			result = capRepo.getCountsByMultipleMedallionsAndPickupDatetime(
 					new ArrayList<String>(Arrays.asList(medallions)),
-					formatter.parse(pickupDate), !ignoreCache);
+					formatter.parse(pickupDate), cached);
 			response = gson.toJson(result);
 		} catch (ParseException e) {
 			JsonObject exceptionMsg = new JsonObject();

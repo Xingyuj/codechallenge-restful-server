@@ -3,8 +3,8 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 15/05/2018 2:50:32 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.datarepublic.simplecab.CabTripData" table="cab_trip_data" catalog="datarepublic" optimistic-lock="version">
-        <composite-id name="id" class="com.datarepublic.simplecab.CabTripDataId">
+    <class name="com.ethanji.simplecab.CabTripData" table="cab_trip_data" catalog="datarepublic" optimistic-lock="version">
+        <composite-id name="id" class="com.ethanji.simplecab.CabTripDataId">
             <key-property name="medallion" type="string">
                 <column name="medallion" length="65535" />
             </key-property>

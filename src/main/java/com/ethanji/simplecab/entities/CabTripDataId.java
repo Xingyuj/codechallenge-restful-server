@@ -1,4 +1,4 @@
-package com.datarepublic.simplecab.entities;
+package com.ethanji.simplecab.entities;
 
 // Generated 15/05/2018 2:50:32 AM by Hibernate Tools 4.3.1
 

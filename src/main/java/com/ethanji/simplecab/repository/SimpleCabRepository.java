@@ -1,4 +1,4 @@
-package com.datarepublic.simplecab.repository;
+package com.ethanji.simplecab.repository;
 
 import java.util.ArrayList;
 import java.util.Date;

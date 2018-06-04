@@ -1,4 +1,4 @@
-package com.datarepublic.simplecab.repository;
+package com.ethanji.simplecab.repository;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
