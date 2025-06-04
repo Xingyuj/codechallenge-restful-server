@@ -40,13 +40,13 @@ public class TwoSums {
 
     public static int[] twoSum(int[] nums, int target){
         int[] result = new int[2];
-        Map<Integer, Integer> suplementMap = new HashMap<>();
+        Map<Integer, Integer> complementMap = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            if (!suplementMap.containsKey(nums[i])) {
-                suplementMap.put(target-nums[i], i);
+            if (!complementMap.containsKey(nums[i])) {
+                complementMap.put(target-nums[i], i);
             } else {
                 result[1] = i;
-                result[0] = suplementMap.get(nums[i]);
+                result[0] = complementMap.get(nums[i]);
             }
         }
         return result;
