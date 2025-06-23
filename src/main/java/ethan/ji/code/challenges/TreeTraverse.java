@@ -23,6 +23,60 @@ public class TreeTraverse {
         return inOrderList;
     }
 
+    public static void inorderRecursive(TreeNode root, List<TreeNode> inorderResult) {
+        if (root == null) {
+            return;
+        }
+        inorderRecursive(root.left, inorderResult);
+        inorderResult.add(root);
+        inorderRecursive(root.right, inorderResult);
+    }
+
+    public static List<TreeNode> inorderTraversalRecursive(TreeNode root) {
+        List<TreeNode> result = new ArrayList<>();
+        inorderRecursive(root, result);
+        return result;
+    }
+
+    public static List<TreeNode> preorderTraversal(TreeNode root) {
+        Stack<TreeNode> treeNodeStack = new Stack<>();
+        List<TreeNode> preOrderList = new ArrayList<>();
+        treeNodeStack.add(root);
+
+        while (!treeNodeStack.empty()) {
+            TreeNode node = treeNodeStack.pop();
+            preOrderList.add(node);
+            if (node.right != null) {
+                treeNodeStack.add(node.right);
+            }
+            if (node.left != null) {
+                treeNodeStack.add(node.left);
+            }
+        }
+        return preOrderList;
+    }
+
+    public static List<TreeNode> postorderTraversal(TreeNode root) {
+        Stack<TreeNode> treeNodeStack = new Stack<>();
+        List<TreeNode> postOrderList = new ArrayList<>();
+        treeNodeStack.add(root);
+
+        while (!treeNodeStack.empty()) {
+            while (root.left != null) {
+                treeNodeStack.add(root);
+                root = root.left;
+            }
+            if (root.right == null) {
+                postOrderList.add(root);
+                root = treeNodeStack.pop();
+            } else {
+                treeNodeStack.add(root.right);
+            }
+
+        }
+        return postOrderList;
+    }
+
     public static void main(String[] args) {
 
     }
